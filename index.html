@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K1 CONNECT - Katlehong</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+body{font-family:'Inter',sans-serif;background:#0A0A0A;color:white}
+.gold{color:#FFD700}
+.gold-bg{background:linear-gradient(135deg,#FFD700,#B8860B)}
+.card{background:#1A1A1A;border:1px solid #333;border-radius:16px}
+.cat-active{background:#FFD700!important;color:black!important}
+.hidden-page{display:none}
+input,select,textarea{background:#222!important;color:white!important;border:1px solid #444!important}
+</style>
+</head>
+<body class="max-w-[430px] mx-auto min-h-screen pb-24">
+
+<div class="sticky top-0 z-50 bg-[#0A0A0A]/95 p-4 flex justify-between items-center border-b border-yellow-500/30">
+  <div class="flex items-center gap-2">
+    <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-2xl shadow-lg shadow-red-600/50">📍</div>
+    <div>
+      <h1 class="font-black text-xl leading-none gold">K1 CONNECT</h1>
+      <p class="text-[10px] tracking-[3px] text-gray-400">KATLEHONG</p>
+    </div>
+  </div>
+  <a href="https://wa.me/27695431394?text=Hi%20K1%20Connect!%20I%20need%20help" target="_blank" class="text-xs bg-green-500 px-3 py-2 rounded-full font-bold">💬 WhatsApp</a>
+</div>
+
+<div id="page-home">
+  <div class="p-4">
+    <h2 class="font-bold text-xl">Hello, Katlehong! 👋</h2>
+    <p class="text-xs text-gray-400">Everything in K1 in one place • Order on WhatsApp: 069 543 1394</p>
+    <div class="mt-3 flex items-center bg-[#1A1A1A] rounded-full px-4 py-3 border border-red-600/50">
+      <span>🔍</span>
+      <input id="searchInput" oninput="filterBusinesses()" placeholder="Search kota, salon, spaza in K1..." class="flex-1 ml-2 bg-transparent outline-none text-sm border-none !bg-transparent" />
+    </div>
+    <div class="mt-4 card p-3">
+      <p class="text-sm font-bold">📍 Katlehong • Live Map</p>
+      <div class="mt-2 h-32 rounded-xl bg-gradient-to-br from-blue-900 via-black to-blue-900 flex items-center justify-center relative overflow-hidden">
+        <div class="absolute text-3xl" style="left:20%;top:30%">📍</div>
+        <div class="absolute text-3xl" style="left:60%;top:20%">📍</div>
+        <div class="absolute text-3xl" style="left:45%;top:55%">📍</div>
+        <div class="absolute text-3xl" style="left:75%;top:60%">📍</div>
+        <p class="text-xs bg-black/70 px-3 py-1 rounded-full">📍 8 Businesses Near You</p>
+      </div>
+    </div>
+    <div class="mt-4 flex justify-between items-center"><h3 class="font-bold">Categories</h3><span class="text-xs gold">See all ></span></div>
+    <div class="flex gap-2 overflow-x-auto py-2">
+      <button onclick="setCat('All',this)" class="cat-btn cat-active shrink-0 px-3 py-2 rounded-full bg-[#222] text-xs">All</button>
+      <button onclick="setCat('Kota',this)" class="cat-btn shrink-0 px-3 py-2 rounded-full bg-[#222] text-xs">🍔 Kota</button>
+      <button onclick="setCat('Spaza',this)" class="cat-btn shrink-0 px-3 py-2 rounded-full bg-[#222] text-xs">🏪 Spaza</button>
+      <button onclick="setCat('Salon',this)" class="cat-btn shrink-0 px-3 py-2 rounded-full bg-[#222] text-xs">✂️ Salon</button>
+      <button onclick="setCat('Sneakers',this)" class="cat-btn shrink-0 px-3 py-2 rounded-full bg-[#222] text-xs">👟 Sneakers</button>
+      <button onclick="setCat('Bakery',this)" class="cat-btn shrink-0 px-3 py-2 rounded-full bg-[#222] text-xs">🥐 Bakery</button>
+      <button onclick="setCat('Catering',this)" class="cat-btn shrink-0 px-3 py-2 rounded-full bg-[#222] text-xs">🎉 Catering</button>
+      <button onclick="setCat('Cellphone',this)" class="cat-btn shrink-0 px-3 py-2 rounded-full bg-[#222] text-xs">📱 Cellphone</button>
+      <button onclick="setCat('Clothing',this)" class="cat-btn shrink-0 px-3 py-2 rounded-full bg-[#222] text-xs">👕 Clothing</button>
+    </div>
+    <h3 class="font-bold mt-2">Featured for You</h3>
+    <div id="businessList" class="space-y-3 mt-3"></div>
+  </div>
+</div>
+
+<div id="page-business" class="hidden-page p-4">
+  <button onclick="showPage('home')" class="text-sm gold">← Back</button>
+  <div id="businessDetail"></div>
+</div>
+
+<div id="page-orders" class="hidden-page p-4">
+  <h2 class="font-bold text-xl">Your Orders 🛒</h2>
+  <div id="cartList" class="mt-4 space-y-3"></div>
+  <div class="mt-4 card p-4">
+    <div class="flex justify-between font-bold"><span>Total:</span><span id="cartTotal" class="gold">R0</span></div>
+    <button onclick="checkoutWhatsApp()" class="w-full mt-3 gold-bg text-black font-black py-3 rounded-full">✅ CHECKOUT ON WHATSAPP - 069 543 1394</button>
+    <p class="text-[11px] text-center text-gray-400 mt-2">Order will be sent to K1 Connect on WhatsApp</p>
+  </div>
+</div>
+
+<div id="page-signup" class="hidden-page p-4">
+  <h2 class="font-bold text-xl gold">OWN A BUSINESS IN K1?</h2>
+  <p class="text-sm mt-1">Get Found. Get Customers. Get Paid.</p>
+  <div class="grid grid-cols-3 gap-2 mt-4 text-center text-[11px]">
+    <div class="card p-3">📍<br><b>BE SEEN</b><br>On K1 Map</div>
+    <div class="card p-3">💬<br><b>GET ORDERS</b><br>WhatsApp & App</div>
+    <div class="card p-3">📈<br><b>GROW</b><br>Promote Specials</div>
+  </div>
+  <div class="mt-4 space-y-3">
+    <input id="bizName" placeholder="Business Name *" class="w-full p-3 rounded-xl" />
+    <select id="bizCat" class="w-full p-3 rounded-xl"><option>Kota</option><option>Spaza</option><option>Salon</option><option>Bakery</option><option>Sneakers</option><option>Clothing</option><option>Catering & Decor</option><option>Cellphone</option></select>
+    <input id="bizPhone" placeholder="Your WhatsApp Number *" class="w-full p-3 rounded-xl" />
+    <input id="bizLoc" placeholder="Location in K1 e.g. Near Tower" class="w-full p-3 rounded-xl" />
+    <textarea id="bizMenu" placeholder="What do you sell? Prices?" class="w-full p-3 rounded-xl" rows="3"></textarea>
+    <button onclick="registerBiz()" class="w-full gold-bg text-black font-black py-3 rounded-full">REGISTER MY BUSINESS NOW</button>
+    <p class="text-center text-xs text-gray-400">Or WhatsApp us directly: 069 543 1394</p>
+  </div>
+</div>
+
+<div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-[#111] border-t border-gray-800 flex justify-around py-3 text-[11px]">
+  <button onclick="showPage('home')" class="flex flex-col items-center"><span>🏠</span>Home</button>
+  <button onclick="showPage('home')" class="flex flex-col items-center"><span>🗺️</span>Map</button>
+  <button onclick="showPage('orders')" class="flex flex-col items-center relative"><span>🛒</span>Orders <span id="cartCount" class="absolute -top-1 -right-1 bg-red-600 text-[10px] w-4 h-4 rounded-full flex items-center justify-center">0</span></button>
+  <button onclick="showPage('signup')" class="flex flex-col items-center"><span>💬</span>Join</button>
+  <button onclick="showPage('signup')" class="flex flex-col items-center"><span>👤</span>Profile</button>
+</div>
+
+<script>
+const businesses=[
+{id:1,name:"KOTA SHOP",cat:"Kota",dist:"0.5km",rating:"4.9",desc:"Best kota in K1! Fresh bread, chips, wors, polony.",emoji:"🍔",menu:[{n:"Kota with Wors",p:45},{n:"Kota with Polony",p:35},{n:"Kota Special",p:60}]},
+{id:2,name:"NOMSA'S SPAZA SHOP",cat:"Spaza",dist:"0.8km",rating:"4.8",desc:"Your trusted spaza. Bread, milk, airtime, snacks.",emoji:"🏪",menu:[{n:"Bread",p:15},{n:"Milk 1L",p:25},{n:"Airtime R20",p:20},{n:"Snacks Pack",p:30}]},
+{id:3,name:"HAIR SALON",cat:"Salon",dist:"1.2km",rating:"4.9",desc:"Braids, Fade, Styling. Walk-ins welcome.",emoji:"💇‍♀️",menu:[{n:"Braids",p:250},{n:"Fade Cut",p:120},{n:"Styling",p:180}]},
+{id:4,name:"CATERING & DECOR",cat:"Catering",dist:"2.1km",rating:"5.0",desc:"Events, Parties, Decor.",emoji:"🎉",menu:[{n:"Party Decor",p:1500},{n:"Catering per Plate",p:120},{n:"Full Package",p:3500}]},
+{id:5,name:"SNEAKER SHOP",cat:"Sneakers",dist:"1.0km",rating:"4.7",desc:"Freshest kicks in K1.",emoji:"👟",menu:[{n:"Nike Style",p:1200},{n:"Adidas Style",p:1100},{n:"Puma Style",p:950}]},
+{id:6,name:"BAKERY",cat:"Bakery",dist:"0.9km",rating:"4.8",desc:"Fresh bread & croissants daily.",emoji:"🥐",menu:[{n:"Croissant",p:25},{n:"Fresh Bread",p:18},{n:"Cake Slice",p:35}]},
+{id:7,name:"CLOTHING STORE",cat:"Clothing",dist:"1.3km",rating:"4.6",desc:"Trendy clothes for family.",emoji:"👕",menu:[{n:"T-Shirt",p:180},{n:"Jeans",p:350},{n:"Hoodie",p:400}]},
+{id:8,name:"CELLPHONE SHOP",cat:"Cellphone",dist:"0.7km",rating:"4.7",desc:"Phones, repairs, airtime.",emoji:"📱",menu:[{n:"Screen Repair",p:450},{n:"Airtime R50",p:50},{n:"Phone Cover",p:120}]}
+];
+let currentCat='All', cart=[], currentBiz=null;
+function renderList(){
+  let list=businesses.filter(b=>(currentCat==='All'||b.cat===currentCat));
+  let q=document.getElementById('searchInput').value.toLowerCase();
+  if(q) list=list.filter(b=>b.name.toLowerCase().includes(q)||b.cat.toLowerCase().includes(q));
+  document.getElementById('businessList').innerHTML=list.map(b=>`
+  <div onclick="openBiz(${b.id})" class="card p-3 flex gap-3 cursor-pointer">
+    <div class="w-20 h-20 bg-[#222] rounded-xl flex items-center justify-center text-4xl">${b.emoji}</div>
+    <div class="flex-1">
+      <p class="font-bold text-sm">${b.name}</p>
+      <p class="text-xs text-gray-400">${b.cat} • ${b.dist} • ⭐ ${b.rating}</p>
+      <p class="text-xs mt-1">${b.menu[0].n} • R${b.menu[0].p}</p>
+      <button class="mt-2 bg-yellow-500 text-black text-[11px] font-bold px-3 py-1 rounded-full">View →</button>
+    </div>
+  </div>`).join('');
+}
+function setCat(c,el){currentCat=c;document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('cat-active'));el.classList.add('cat-active');renderList();}
+function filterBusinesses(){renderList();}
+function showPage(p){
+  ['home','business','orders','signup'].forEach(x=>document.getElementById('page-'+x).classList.add('hidden-page'));
+  document.getElementById('page-'+p).classList.remove('hidden-page');
+  window.scrollTo(0,0);
+  if(p==='orders') renderCart();
+}
+function openBiz(id){
+  currentBiz=businesses.find(b=>b.id===id);
+  document.getElementById('businessDetail').innerHTML=`
+  <div class="h-40 bg-[#222] rounded-2xl flex items-center justify-center text-7xl mt-3">${currentBiz.emoji}</div>
+  <h2 class="font-black text-xl mt-3">${currentBiz.name}</h2>
+  <p class="text-xs text-gray-400">${currentBiz.cat} • ${currentBiz.dist} • ⭐ ${currentBiz.rating} • Open Now</p>
+  <p class="text-sm mt-2">${currentBiz.desc}</p>
+  <h3 class="font-bold mt-4">Menu / Services</h3>
+  <div class="space-y-2 mt-2">${currentBiz.menu.map((m,i)=>`
+    <div class="card p-3 flex justify-between items-center"><div><p class="text-sm font-bold">${m.n}</p><p class="gold text-sm">R${m.p}</p></div><button onclick="addToCart('${m.n}',${m.p})" class="gold-bg text-black text-xs font-bold px-3 py-2 rounded-full">+ ADD</button></div>`).join('')}</div>
+  <button onclick="checkoutWhatsApp()" class="w-full mt-4 bg-green-500 text-white font-bold py-3 rounded-full">💬 ORDER ON WHATSAPP - 069 543 1394</button>
+  <button onclick="showPage('orders')" class="w-full mt-2 bg-[#222] py-3 rounded-full text-sm">View Cart (${cart.length})</button>`;
+  showPage('business');
+}
+function addToCart(n,p){cart.push({n,p});document.getElementById('cartCount').innerText=cart.length;alert(n+' added! R'+p);}
+function renderCart(){
+  document.getElementById('cartList').innerHTML=cart.length?cart.map((c,i)=>`<div class="card p-3 flex justify-between"><span class="text-sm">${c.n}</span><b class="gold">R${c.p}</b></div>`).join(''):'<p class="text-gray-400 text-sm text-center py-6">Cart is empty. Go add a kota! 🍔</p>';
+  let total=cart.reduce((s,c)=>s+c.p,0);
+  document.getElementById('cartTotal').innerText='R'+total;
+}
+function checkoutWhatsApp(){
+  if(!cart.length){alert('Add something to cart first!');return;}
+  let total=cart.reduce((s,c)=>s+c.p,0);
+  let msg='Hi K1 Connect! I want to order:%0A'+cart.map(c=>`- ${c.n} R${c.p}`).join('%0A')+'%0A Total: R'+total+'%0A My Name: %0A My Location in K1: ';
+  window.open('https://wa.me/27695431394?text='+msg,'_blank');
+}
+function registerBiz(){
+  let n=document.getElementById('bizName').value||'New Business';
+  let c=document.getElementById('bizCat').value;
+  let p=document.getElementById('bizPhone').value;
+  let l=document.getElementById('bizLoc').value;
+  let m=document.getElementById('bizMenu').value;
+  let msg=`Hi K1 Connect! I want to register my business:%0AName: ${n}%0ACategory: ${c}%0AMy WhatsApp: ${p}%0ALocation: ${l}%0AMenu: ${m}`;
+  window.open('https://wa.me/27695431394?text='+msg,'_blank');
+}
+renderList();
+</script>
+</body>
+</html>
